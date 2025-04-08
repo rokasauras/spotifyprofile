@@ -8,7 +8,6 @@ const code = params.get("code");
 if (!code) {
   redirectToAuthCodeFlow(clientId);
 } else {
-  // We have a code, so use it to get an access token and fetch profile
   const accessToken = await getAccessToken(clientId, code);
   const profile = await fetchProfile(accessToken);
   populateUI(profile);
@@ -26,10 +25,8 @@ async function redirectToAuthCodeFlow(clientId: string) {
   params.append("client_id", clientId);
   params.append("response_type", "code");
 
-  // Make sure this matches what you set in Spotify App Redirect URI
   params.append("redirect_uri", "http://127.0.0.1:5173/callback");
 
-  // Request whatever scopes you need
   params.append("scope", "user-read-private user-read-email");
 
   // PKCE challenge
@@ -60,7 +57,6 @@ async function generateCodeChallenge(verifier: string) {
 }
 
 async function getAccessToken(clientId: string, code: string): Promise<string> {
-  // Retrieve your saved verifier
   const verifier = localStorage.getItem("verifier");
 
   const params = new URLSearchParams();
